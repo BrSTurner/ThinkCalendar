@@ -1,0 +1,18 @@
+﻿@model CalendarEventDTO
+
+@{
+    ViewData["Title"] = "Delete Calendar Event";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<form asp-controller="Event" asp-action="Delete" class="mt-3 text-center">
+    <h5>Are you sure you want to delete the event: @Model.Title?</h5><br/>
+    <h5>This action cannot be undone</h5>
+    <div class="mt-3">
+        <div class="form-actions no-color">
+            <a asp-controller="Calendar" asp-action="Index" class="btn btn-light">Back</a>&nbsp;
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </div>
+    </div>
+</form>

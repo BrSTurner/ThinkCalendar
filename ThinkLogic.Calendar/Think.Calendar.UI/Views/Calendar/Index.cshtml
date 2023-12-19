@@ -1,0 +1,155 @@
+﻿@model CalendarViewModel
+@{
+    ViewData["Title"] = $"Calendar";
+}
+<div class="container">
+    <div class="text-center mt-2">        
+        <h3>Access and Manage all you events for this month</h3><br/>
+        <h3 class="mb-2">@Model.CurrentDate.ToString("MMMM")</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="calendar-container">
+                <div class="calendar-data">
+                    <table class="table table-bordered">
+                        <thead >
+                            <tr>
+                                <th scope="col">Sunday</th>
+                                <th scope="col">Monday</th>
+                                <th scope="col">Tuesday</th>
+                                <th scope="col">Wednesday</th>
+                                <th scope="col">Thursday</th>
+                                <th scope="col">Friday</th>
+                                <th scope="col">Saturday</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            @{
+                                var firstDay = new DateTime(Model.CurrentYear, Model.CurrentMonth, 1);
+                                var firstDayOfTheMonth = (int)firstDay.DayOfWeek;                               
+                                var amountOfDaysInThisMonth = (firstDayOfTheMonth + DateTime.DaysInMonth(Model.CurrentYear, Model.CurrentMonth));
+                            }
+                            @for (var i = 0; i < amountOfDaysInThisMonth; i++)
+                            {
+                                if (i < firstDayOfTheMonth)
+                                {
+                                    <td></td>
+                                    continue;
+                                }
+                                else if (i % 7 == 0)
+                                {
+                                    <tr></tr>
+                                }
+
+                            <td ondblclick="addEvent('@Model.SelectedDate.ToString(" yyyy-MM-ddTHH:mm:ss")')" onclick="onDaySelect('@firstDay.ToString(" yyyy-MM-ddTHH:mm:ss")')" class="custom-card @(firstDay.Day == Model.SelectedDay ? "selected" : "")">
+                                @(firstDay.Day)
+                            </td>
+
+                                firstDay = firstDay.AddDays(1);
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-12 p-3 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>Your events for the selected day:</h2>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    Title
+                                </th>
+                                <th scope="col">
+                                    Date
+                                </th>
+                                <th scope="col">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsDay">
+                            @if (Model.Events.Any())
+                            {
+                                @foreach (var item in Model.Events)
+                                {
+
+                                    <tr>
+                                        <td>
+                                           @(item.Title)                                            
+                                        </td>
+                                        <td>
+                                           @(item.StartDate.ToShortDateString())
+                                        </td>
+                                        <td>
+                                             <a href="/Event/Index/@item.Id" class="btn btn-primary">
+                                                View
+                                            </a>
+                                            <a href="/Event/Edit/@item.Id" class="btn btn-success">
+                                                Edit
+                                            </a>
+                                             <a href="/Event/Delete/@item.Id" class="btn btn-danger">
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="3">
+                                        <button class="btn btn-primary" onclick="addEvent('@Model.SelectedDate.ToString(" yyyy-MM-ddTHH:mm:ss")')">Add Event</button>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">
+                                        <p>No events were found, create a new one</p>
+                                        <button class="btn btn-primary" onclick="addEvent('@Model.SelectedDate.ToString(" yyyy-MM-ddTHH:mm:ss")')">Add Event</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .calendar-data{
+        text-align: center;
+    }
+
+    .selected {
+        background-color: limegreen !important;
+    }
+
+    .custom-card:hover{
+        background-color: limegreen;
+    }
+    
+
+</style>
+
+@section scripts
+    {
+    <script type="text/javascript">
+
+        function onDaySelect(date){
+            window.location.href = `/Calendar/Index?selectedDate=${date}`;
+        }
+
+        function addEvent(date) {
+            window.location.href = `/Event/Create?selectedDate=${date}`;
+        }
+    </script>
+}

@@ -1,0 +1,96 @@
+﻿@model CalendarEventDTO
+@{
+    ViewData["Title"] = $"Edit Calendar Event - {Model.Title}";
+}
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    @if (ViewBag.Errors != null && ViewBag.Errors.Count > 0)
+    {
+        foreach (var error in ViewBag.Errors)
+        {
+            <span class="text-danger">@error</span>
+
+            <br />
+        }
+    }
+    <form asp-controller="Event" asp-action="Edit" asp-route-id="">
+        <div class="form-horizontal">
+            @Html.HiddenFor(x => x.Id)
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="col-md-2 control-label"></label>
+                <div class="col-md-12">
+                    <input asp-for="Title" class="form-control" placeholder="Pool Party" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="StartDate" class="col-md-2 control-label">Start Date</label>
+                <div class="col-md-12">
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="EndDate" class="col-md-2 control-label">End Date</label>
+                <div class="col-md-12">
+                    <input asp-for="EndDate" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Location" class="col-md-2 control-label"></label>
+                <div class="col-md-12">
+                    <input asp-for="Location" class="form-control" placeholder="Bruno's place" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="col-md-2 control-label"></label>
+                <div class="col-md-12">
+                    <input asp-for="Description" class="form-control" placeholder="A really fun pool party at my house" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="col-md-2 control-label"></label>
+                <div class="col-md-12">
+                    <input type="email" asp-for="Email" class="form-control" placeholder="hired@thinklogic.com" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="d-flex flex-row justify-content-end">
+                    <input type="submit" value="Confirm" class="btn btn-success" />
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var addedValues = [];
+
+            function updateAddedValuesList() {
+                var addedValuesList = $("#addedValuesList");
+                addedValuesList.empty();
+
+                addedValues.forEach(function (value) {
+                    addedValuesList.append('<li class="list-group-item">' + value + '</li>');
+                });
+            }
+
+            $("#addValueButton").click(function () {
+                var inputValue = $("#multipleValuesInput").val();
+                if (inputValue) {
+                    addedValues.push(inputValue);
+                    updateAddedValuesList();
+                    $("#multipleValuesInput").val('');
+                }
+            });
+        });
+    </script>
+}
