@@ -15,8 +15,8 @@ namespace Think.Calendar.Domain.Mediator.Commands
 
         public AddCalendarEventCommand()
         {
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now.AddMinutes(30);
+            StartDate = DateTime.Now.Date;
+            EndDate = DateTime.Now.Date.AddMinutes(30);
         }
 
         public override bool IsValid()
