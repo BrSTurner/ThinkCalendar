@@ -22,5 +22,6 @@ A few frameworks were used to develop this projec, such as:
 - Dapper to perform High Perfomance queries in the database.
 - Fluent Validation to validate command fields.
 - MediatR to implement the Mediator pattern
+- AutoMapper to map database entities to DTO/View Models
 
 In order to run this project it is necessary to run the Update-Database command to perform the migrations to the Local DB.
