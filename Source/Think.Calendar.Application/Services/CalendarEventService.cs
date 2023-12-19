@@ -1,4 +1,5 @@
-﻿using Think.Calendar.Application.Model;
+﻿using AutoMapper;
+using Think.Calendar.Application.Model;
 using Think.Calendar.Application.Services.Interrfaces;
 using Think.Calendar.Domain.Mediator.Commands;
 using Think.Calendar.Domain.Mediator.Interfaces;
@@ -11,13 +12,15 @@ namespace Think.Calendar.Application.Services
     {
         private readonly IMediatorHandler _mediator;
         private readonly ICalendarEventRepository _calendarEventRepository;
-
+        private readonly IMapper _mapper;
         public CalendarEventService(
             IMediatorHandler mediator,
-            ICalendarEventRepository calendarEventRepository)
+            ICalendarEventRepository calendarEventRepository,
+            IMapper mapper)
         {
             _mediator = mediator;
             _calendarEventRepository = calendarEventRepository;
+            _mapper = mapper;
         }
 
         public async Task<CalendarEventDTO> AddNewAsync(AddCalendarEventCommand addCalendarEventCommand)
@@ -26,19 +29,10 @@ namespace Think.Calendar.Application.Services
 
             if(result.Success && result.Data != null)
             {
-                return new CalendarEventDTO
-                {
-                    Id = result.Data.Id,
-                    Title = result.Data.Title,
-                    Description = result.Data.Description,
-                    StartDate = result.Data.StartDate,
-                    Email = result.Data.Email,
-                    EndDate = result.Data.EndDate,
-                    Location = result.Data.Location                    
-                };
+                return _mapper.Map<CalendarEventDTO>(result.Data);
             }
 
-            return null;
+            return _mapper.Map<CalendarEventDTO>(addCalendarEventCommand);
         }
 
         public async Task<CalendarEventDTO> UpdateAsync(UpdateCalendarEventCommand updateCalendarEventCommand)
@@ -47,19 +41,10 @@ namespace Think.Calendar.Application.Services
 
             if (result.Success && result.Data != null)
             {
-                return new CalendarEventDTO
-                {
-                    Id = result.Data.Id,
-                    Title = result.Data.Title,
-                    Description = result.Data.Description,
-                    StartDate = result.Data.StartDate,
-                    Email = result.Data.Email,
-                    EndDate = result.Data.EndDate,
-                    Location = result.Data.Location
-                };
+                return _mapper.Map<CalendarEventDTO>(result.Data);
             }
 
-            return null;
+            return _mapper.Map<CalendarEventDTO>(updateCalendarEventCommand);
         }
 
         public async Task<IEnumerable<CalendarEventDTO>> GetEventsByDateAsync(DateTime date)
@@ -69,16 +54,7 @@ namespace Think.Calendar.Application.Services
             if(events == null || !events.Any())
                 return new List<CalendarEventDTO>();
 
-            return events.Select(x => new CalendarEventDTO
-            {
-                Id = x.Id,
-                Title = x.Title,
-                Description = x.Description,
-                StartDate = x.StartDate,
-                EndDate = x.EndDate,
-                Location = x.Location,
-                Email = x.Email
-            });
+            return _mapper.Map<IEnumerable<CalendarEventDTO>>(events);
         }
 
         public async Task<CalendarEventDTO> GetEventByIdAsync(int id)
@@ -88,16 +64,7 @@ namespace Think.Calendar.Application.Services
             if (calendarEvent == null)
                 return null;
 
-            return  new CalendarEventDTO
-            {
-                Id = calendarEvent.Id,
-                Title = calendarEvent.Title,
-                Description = calendarEvent.Description,
-                StartDate = calendarEvent.StartDate,
-                EndDate = calendarEvent.EndDate,
-                Location = calendarEvent.Location,
-                Email = calendarEvent.Email
-            };
+            return _mapper.Map<CalendarEventDTO>(calendarEvent);
         }
 
         public async Task<bool> DeleteAsync(int id)

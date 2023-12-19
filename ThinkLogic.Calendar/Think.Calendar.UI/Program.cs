@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ThinkCalendarContext>(options =>
 
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 builder.Services.AddThinkCalendar();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

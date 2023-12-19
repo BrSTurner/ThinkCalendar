@@ -51,7 +51,10 @@ namespace Think.Calendar.UI.Controllers
             var model = await _service.AddNewAsync(command);
 
             if (HasDomainErrors())
+            {
+                SetMaxAndMinDate();
                 return View(command);
+            }
 
             return RedirectToAction("Index", "Event", new { id = model.Id });
         }
@@ -76,6 +79,13 @@ namespace Think.Calendar.UI.Controllers
         public async Task<IActionResult> Edit(UpdateCalendarEventCommand command)
         {
             var model = await _service.UpdateAsync(command);
+
+            if (HasDomainErrors())
+            {
+                SetMaxAndMinDate();
+                return View(model);
+            }
+
             return RedirectToAction("Index", "Event", new { id = model.Id });
         }
 
@@ -83,7 +93,7 @@ namespace Think.Calendar.UI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) 
-                return NotFound();
+                return BadRequest("Id is not valid");
 
             var result = await _service.GetEventByIdAsync(id);
 
