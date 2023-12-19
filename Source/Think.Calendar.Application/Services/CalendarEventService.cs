@@ -22,7 +22,7 @@ namespace Think.Calendar.Application.Services
 
         public async Task<CalendarEventDTO> AddNewAsync(AddCalendarEventCommand addCalendarEventCommand)
         {
-            var result = await _mediator.SendCommand<AddCalendarEventCommand, CalendarEvent>(addCalendarEventCommand);
+            var result = await _mediator.SendCommandAsync<AddCalendarEventCommand, CalendarEvent>(addCalendarEventCommand);
 
             if(result.Success && result.Data != null)
             {
@@ -41,9 +41,9 @@ namespace Think.Calendar.Application.Services
             return null;
         }
 
-        public async Task<CalendarEventDTO> Update(UpdateCalendarEventCommand updateCalendarEventCommand)
+        public async Task<CalendarEventDTO> UpdateAsync(UpdateCalendarEventCommand updateCalendarEventCommand)
         {
-            var result = await _mediator.SendCommand<UpdateCalendarEventCommand, CalendarEvent>(updateCalendarEventCommand);
+            var result = await _mediator.SendCommandAsync<UpdateCalendarEventCommand, CalendarEvent>(updateCalendarEventCommand);
 
             if (result.Success && result.Data != null)
             {
@@ -100,9 +100,9 @@ namespace Think.Calendar.Application.Services
             };
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _mediator.SendCommand<DeleteCalendarEventCommand, bool>(new DeleteCalendarEventCommand
+            var result = await _mediator.SendCommandAsync<DeleteCalendarEventCommand, bool>(new DeleteCalendarEventCommand
             {
                 Id = id
             });

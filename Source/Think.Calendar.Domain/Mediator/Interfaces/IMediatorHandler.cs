@@ -5,8 +5,8 @@ namespace Think.Calendar.Domain.Mediator.Interfaces
 {
     public interface IMediatorHandler
     {
-        Task<CommandResult<TResult>> SendCommand<TCommand, TResult>(TCommand command) where TCommand : Command<TResult>;
+        Task<CommandResult<TResult>> SendCommandAsync<TCommand, TResult>(TCommand command) where TCommand : Command<TResult>;
 
-        Task PublishEvent<T>(T @event) where T : MediatorEvent; 
+        Task PublishEventAsync<T>(T @event) where T : MediatorEvent; 
     }
 }

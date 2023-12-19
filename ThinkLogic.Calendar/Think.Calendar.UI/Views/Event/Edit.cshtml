@@ -66,31 +66,3 @@
         </div>
     </form>
 </div>
-
-
-@section scripts
-    {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var addedValues = [];
-
-            function updateAddedValuesList() {
-                var addedValuesList = $("#addedValuesList");
-                addedValuesList.empty();
-
-                addedValues.forEach(function (value) {
-                    addedValuesList.append('<li class="list-group-item">' + value + '</li>');
-                });
-            }
-
-            $("#addValueButton").click(function () {
-                var inputValue = $("#multipleValuesInput").val();
-                if (inputValue) {
-                    addedValues.push(inputValue);
-                    updateAddedValuesList();
-                    $("#multipleValuesInput").val('');
-                }
-            });
-        });
-    </script>
-}

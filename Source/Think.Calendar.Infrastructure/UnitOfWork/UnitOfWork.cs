@@ -12,7 +12,7 @@ namespace Think.Calendar.Infrastructure.UnitOfWork
             _context = context; 
         }
 
-        public async Task<bool> Commit()
+        public async Task<bool> CommitAsync()
         {
             try
             {

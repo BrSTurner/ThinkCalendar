@@ -13,10 +13,6 @@ namespace Think.Calendar.Domain.Mediator.Commands
         public DateTime EndDate { get; set; }
         public string Email { get; set; }
 
-        public AddCalendarEventCommand()
-        {
-        }
-
         public override bool IsValid()
         {
             ValidationResult = new AddCalendarEventValidation().Validate(this);

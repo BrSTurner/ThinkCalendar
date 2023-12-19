@@ -37,7 +37,7 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
 
             var entity = await _calendarEventRepository.AddNewAsync(new CalendarEvent(request.Title, request.Description, request.Location, request.StartDate, request.EndDate, request.Email));
 
-            if(!(await Commit())) 
+            if(!(await CommitAsync())) 
             {
                 return result;
             }
@@ -47,7 +47,7 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
 
             if(!string.IsNullOrEmpty(request.Email))
             {
-                await _mediator.PublishEvent(new CalendarEventCreatedNotification(request.Title, request.Description, request.Location, request.StartDate, request.EndDate, request.Email));
+                await _mediator.PublishEventAsync(new CalendarEventCreatedNotification(request.Title, request.Description, request.Location, request.StartDate, request.EndDate, request.Email));
             }
 
             return result;
@@ -74,7 +74,7 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
 
             entity.Update(request.Title, request.Description, request.Location, request.StartDate, request.EndDate, request.Email);
 
-            if (!(await Commit()))
+            if (!(await CommitAsync()))
             {
                 return result;
             }
@@ -90,7 +90,7 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
                 eventUpdatedNotificaiton.Description = request.Description;
                 eventUpdatedNotificaiton.Location = request.Location;
 
-                await _mediator.PublishEvent(eventUpdatedNotificaiton);
+                await _mediator.PublishEventAsync(eventUpdatedNotificaiton);
             }
 
             return result;
@@ -123,7 +123,7 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
 
             _calendarEventRepository.Delete(entity);
 
-            if (!(await Commit()))
+            if (!(await CommitAsync()))
             {
                 return result;
             }
@@ -133,7 +133,7 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
 
             if (!string.IsNullOrEmpty(deletedEventNotification.Email))
             {
-                await _mediator.PublishEvent(deletedEventNotification);
+                await _mediator.PublishEventAsync(deletedEventNotification);
             }
 
             return result;

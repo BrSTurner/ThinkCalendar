@@ -45,9 +45,9 @@ namespace Think.Calendar.Domain.Mediator.CommandHandlers
             });
         }
 
-        protected async Task<bool> Commit()
+        protected async Task<bool> CommitAsync()
         {
-            if(!(await _unitOfWork.Commit()))
+            if(!(await _unitOfWork.CommitAsync()))
             {
                 _notificator.AddError("Sometring went wrong saving data to the database, try again later");
                 return false;

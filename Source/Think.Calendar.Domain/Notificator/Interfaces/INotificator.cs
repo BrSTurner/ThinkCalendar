@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Think.Calendar.Domain.Notificator.Interfaces
+﻿namespace Think.Calendar.Domain.Notificator.Interfaces
 {
     public interface INotificator
     {

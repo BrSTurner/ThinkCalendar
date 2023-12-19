@@ -71,7 +71,7 @@ namespace Think.Calendar.UI.Controllers
         [HttpPost("Event/Edit")]
         public async Task<IActionResult> Edit(UpdateCalendarEventCommand command)
         {
-            var model = await _service.Update(command);
+            var model = await _service.UpdateAsync(command);
             return View("Index", model);
         }
 
@@ -92,7 +92,7 @@ namespace Think.Calendar.UI.Controllers
         [HttpPost("Event/Delete/{id:int}")]
         public async Task<IActionResult> DeleteEvent(int id)
         {
-            await _service.Delete(id);
+            await _service.DeleteAsync(id);
 
             return RedirectToAction("Index", "Calendar");            
         }

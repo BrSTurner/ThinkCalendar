@@ -14,7 +14,7 @@ namespace Think.Calendar.Infrastructure.Mediator
             _mediator = mediator;
         }
 
-        public async Task PublishEvent<T>(T @event) where T : MediatorEvent => await _mediator.Publish(@event);
-        public async Task<CommandResult<TResult>> SendCommand<TCommand, TResult>(TCommand command) where TCommand : Command<TResult> => await _mediator.Send(command);
+        public async Task PublishEventAsync<T>(T @event) where T : MediatorEvent => await _mediator.Publish(@event);
+        public async Task<CommandResult<TResult>> SendCommandAsync<TCommand, TResult>(TCommand command) where TCommand : Command<TResult> => await _mediator.Send(command);
     }
 }
