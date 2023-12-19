@@ -20,20 +20,8 @@ namespace Think.Calendar.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery]DateTime? selectedDate = null)
         {
-            if (selectedDate.HasValue)
-            {
-                var today = DateTime.Now;
-                var firstDayInTheMonth = new DateTime(today.Year, today.Month, 1).Date;
-                var lastDayInTheMonth = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month))
-                    .AddHours(23)
-                    .AddMinutes(59)
-                    .AddSeconds(59);            
-
-                if(selectedDate < firstDayInTheMonth || selectedDate > lastDayInTheMonth)
-                {
-                    return NotFound();
-                }
-            }
+            if (!ValidateSelectedDate(selectedDate))
+                return BadRequest("This date is not valid");
 
             var model = selectedDate.HasValue ? new CalendarViewModel(selectedDate.Value) : new CalendarViewModel();
 

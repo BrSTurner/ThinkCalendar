@@ -41,7 +41,7 @@
                                     <tr></tr>
                                 }
 
-                            <td ondblclick="addEvent('@Model.SelectedDate.ToString(" yyyy-MM-ddTHH:mm:ss")')" onclick="onDaySelect('@firstDay.ToString(" yyyy-MM-ddTHH:mm:ss")')" class="custom-card @(firstDay.Day == Model.SelectedDay ? "selected" : "")">
+                            <td onclick="onDaySelect('@firstDay.ToString(" yyyy-MM-ddTHH:mm:ss")')" class="custom-card @(firstDay.Day == Model.SelectedDay ? "selected" : "")">
                                 @(firstDay.Day)
                             </td>
 
@@ -135,6 +135,7 @@
 
     .custom-card:hover{
         background-color: limegreen;
+        cursor: pointer;
     }
     
 

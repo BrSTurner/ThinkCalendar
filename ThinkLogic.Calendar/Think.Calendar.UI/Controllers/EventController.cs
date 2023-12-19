@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Think.Calendar.Application.Model;
 using Think.Calendar.Application.Services.Interrfaces;
 using Think.Calendar.Domain.Mediator.Commands;
 using Think.Calendar.Domain.Notificator.Interfaces;
-using Think.Calendar.Domain.Repositories.Interfaces;
 
 namespace Think.Calendar.UI.Controllers
 {
@@ -31,14 +29,18 @@ namespace Think.Calendar.UI.Controllers
         [HttpGet("Event/Create")]
         public IActionResult Create(DateTime? selectedDate = null)
         {
-            AddCalendarEventCommand model = null;
+            var model = new AddCalendarEventCommand();
+            
+            if (!ValidateSelectedDate(selectedDate))
+                return BadRequest("This date is not valid");
 
-            if(selectedDate.HasValue)
+            if (selectedDate.HasValue)
             {
-                model = new AddCalendarEventCommand();
                 model.StartDate = selectedDate.Value;
                 model.EndDate = selectedDate.Value.AddMinutes(30);
             }
+
+            SetMaxAndMinDate();
 
             return View(model);
         }
@@ -51,7 +53,7 @@ namespace Think.Calendar.UI.Controllers
             if (HasDomainErrors())
                 return View(command);
 
-            return View("Index", model);
+            return RedirectToAction("Index", "Event", new { id = model.Id });
         }
 
         [HttpGet("Event/Edit/{id:int}")]
@@ -65,6 +67,8 @@ namespace Think.Calendar.UI.Controllers
             if (result == null) 
                 return NotFound();
 
+            SetMaxAndMinDate();
+
             return View(result);
         }
 
@@ -72,7 +76,7 @@ namespace Think.Calendar.UI.Controllers
         public async Task<IActionResult> Edit(UpdateCalendarEventCommand command)
         {
             var model = await _service.UpdateAsync(command);
-            return View("Index", model);
+            return RedirectToAction("Index", "Event", new { id = model.Id });
         }
 
         [HttpGet("Event/Delete/{id:int}")]

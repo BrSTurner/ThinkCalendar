@@ -25,5 +25,37 @@ namespace Think.Calendar.UI.Controllers
 
             return false;
         }
+
+        protected virtual void SetMaxAndMinDate()
+        {
+            ViewBag.MinDate = GetFirstDayOfTheMonth();
+            ViewBag.MaxDate = GetLastDayOfTheMonth();
+        }
+
+        protected virtual bool ValidateSelectedDate(DateTime? selectedDate = null)
+        {
+            if (!selectedDate.HasValue)
+                return true;
+
+            var firstDayInTheMonth = GetFirstDayOfTheMonth();
+            var lastDayInTheMonth = GetLastDayOfTheMonth();
+
+            return (selectedDate >= firstDayInTheMonth && selectedDate <= lastDayInTheMonth);
+        }
+
+        protected DateTime GetFirstDayOfTheMonth()
+        {
+            var today = DateTime.Today;
+            return new DateTime(today.Year, today.Month, 1).Date;
+        }
+
+        protected DateTime GetLastDayOfTheMonth()
+        {
+            var today = DateTime.Today;
+            return new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month))
+                        .AddHours(23)
+                        .AddMinutes(59)
+                        .AddSeconds(59);
+        }
     }
 }
